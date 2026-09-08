@@ -6,6 +6,7 @@ import io
 import time
 from urllib.parse import urljoin
 import re
+from http_client import fetch_url
 
 st.set_page_config(page_title="Tải tài liệu từ Tập huấn", page_icon="📚", layout="wide")
 
@@ -78,9 +79,7 @@ def download_images(image_urls, progress_bar, status_text):
     for i, url in enumerate(image_urls):
         try:
             status_text.text(f"Đang tải trang {i+1}/{total}...")
-            response = requests.get(url, timeout=30, headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            })
+            response = fetch_url(url)
             response.raise_for_status()
             
             img = Image.open(io.BytesIO(response.content))
@@ -129,9 +128,7 @@ if submitted and url_input:
     
     try:
         with st.spinner("Đang tải trang web..."):
-            response = requests.get(url_input, timeout=30, headers={
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            })
+            response = fetch_url(url_input)
             response.raise_for_status()
         
         # Extract base URL for relative paths
@@ -176,6 +173,13 @@ if submitted and url_input:
             else:
                 st.session_state.error = "Không tải được ảnh nào."
                 
+    except requests.exceptions.SSLError as e:
+        st.session_state.error = (
+            "Không thể xác minh chứng chỉ HTTPS của máy chủ. "
+            "Hãy cập nhật môi trường bằng `pip install --upgrade certifi requests`, "
+            "kiểm tra ngày giờ hệ thống, hoặc tắt proxy/antivirus đang chèn chứng chỉ. "
+            f"Chi tiết: {e}"
+        )
     except requests.RequestException as e:
         st.session_state.error = f"Lỗi kết nối: {str(e)}"
     except Exception as e:
