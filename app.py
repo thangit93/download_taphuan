@@ -116,8 +116,8 @@ def images_to_pdf(images):
 with st.form("url_form"):
     url_input = st.text_input(
         "URL trang sách",
-        placeholder="https://olm.vn/training/... hoặc https://cdn3.olm.vn/...",
-        help="Nhập URL trang chứa sách (ví dụ: https://olm.vn/training/detail/12345)"
+        placeholder="https://taphuan.nxbgd.vn/tap-huan/doc-sach/sgk-tieng-viet-2-tap-mot.4698590737#page=0",
+        help="Nhập URL trang chứa sách (ví dụ: https://taphuan.nxbgd.vn/tap-huan/doc-sach/sgk-tieng-viet-2-tap-mot.4698590737#page=0)"
     )
     submitted = st.form_submit_button("🔍 Lấy sách", type="primary", use_container_width=True)
 
@@ -209,4 +209,4 @@ if st.session_state.pdf_bytes:
 
 # Footer
 st.divider()
-st.caption("Công cụ tải tài liệu từ OLm.vn | Hỗ trợ cấu trúc div#reader > .page-content > img")
+st.caption("Công cụ tải tài liệu từ taphuan.nxbgd.vn | Hỗ trợ cấu trúc div#reader > .page-content > img")
